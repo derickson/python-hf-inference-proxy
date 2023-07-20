@@ -12,6 +12,7 @@ load_dotenv()
 bearer_token = os.environ.get('HUGGINGFACEHUB_API_TOKEN')
 flan_endpoint = os.environ.get('FLAN_HF_URL')
 falcon_endpoint = os.environ.get('FALCON_HF_URL')
+llama_endpoint = os.environ.get('LLAMA2_HF_URL')
 
 class LLMPrompt(BaseModel):
     prompt: str
@@ -38,7 +39,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Try endpoints /flan and /falcon"}
+    return {"message": "Try endpoints /flan , /falcon , or /llama2 "}
 
 
 @app.post('/flan')
@@ -50,6 +51,11 @@ def proxyFlan(prompt: LLMPrompt):
 def proxyFalcon(prompt: LLMPrompt):
     # Make a request to your large language model endpoint
     return proxyLLM(prompt, falcon_endpoint)
+
+@app.post('/llama2')
+def proxyFalcon(prompt: LLMPrompt):
+    # Make a request to your large language model endpoint
+    return proxyLLM(prompt, llama_endpoint)
 
 
 
